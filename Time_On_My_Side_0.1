@@ -1,0 +1,48 @@
+// ==UserScript==
+// @name         Time On My Side
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  HOME画面に時刻表示
+// @author       Ameba Blog User
+// @match        https://www.ameba.jp/home
+// @grant        none
+// ==/UserScript==
+
+
+window.addEventListener('load', main);
+
+    function main(){
+
+    let board=document.querySelector('.HomeUserProfile');
+    board.style.position='relative';
+    let watch=document.createElement('div');
+    watch.setAttribute('id', 'ff_watch');
+    watch.style.position='absolute';
+    watch.style.top='4px';
+    watch.style.right='25px';
+    watch.style.font='bold 16px Meiryo';
+    watch.style.color='#0292a5';
+    if(!board.querySelector('#ff_watch')){
+        board.appendChild(watch); }
+
+    let time_=setInterval(disp_watch, 1000);
+
+    function disp_watch(){
+        let watch_board=document.querySelector('#ff_watch');
+        let now=new Date();
+        get_ch(now);
+
+        function get_ch(time){
+            let Year=time.getFullYear();
+            let Month=getdouble(time.getMonth()+1);
+            let Date=getdouble(time.getDate());
+            let Hour=getdouble(time.getHours());
+            let Min=getdouble(time.getMinutes());
+            let Sec =getdouble(time.getSeconds());
+
+            function getdouble(number){
+                return ("0" + number).slice(-2); }
+
+            watch_board.innerHTML=
+                "<span style='vertical-align: 2px;'>⏰ </span>"+
+                Year+"."+Month+"."+Date+"　"+Hour+":"+Min+":"+Sec; }}}
