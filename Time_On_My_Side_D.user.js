@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Time On My Side D
 // @namespace        http://tampermonkey.net/
-// @version        1.1
+// @version        1.2
 // @description        HOME・編集画面のデジタル時刻表示
 // @author        Ameba Blog User
 // @match        https://www.ameba.jp/home
@@ -196,13 +196,17 @@ function main(){
 
 
     function get_cookie(name){
-        let cookie_req=document.cookie.split('; ').find(row=>row.startsWith(name));
-        if(cookie_req){
-            if(cookie_req.split('=')[1]==null){
+        let cookie_req=document.cookie.split(';');
+        for(let k=0; k<cookie_req.length; k++){
+            cookie_req[k]=cookie_req[k].trim(); } // 前後の空白を削除
+
+        let cookie=cookie_req.find(row=>row.startsWith(name+'='));
+        if(cookie){
+            if(cookie.split('=')[1]==null){
                 return 0; }
             else{
-                return cookie_req.split('=')[1]; }}
-        if(!cookie_req){
+                return cookie.split('=')[1]; }}
+        if(!cookie){
             return 0; }}
 
 } // main()
